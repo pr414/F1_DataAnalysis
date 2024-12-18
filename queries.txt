@@ -1,0 +1,139 @@
+total_races
+[
+  {
+    // Step 1: Group by driverId and count the total races
+    $group: {
+      _id: "$driverId",
+      // Group by driverId
+      totalRaces: {
+        $sum: 1
+      } // Count the total number of races
+    }
+  },
+  {
+    // Step 2: Lookup to join with the drivers_id collection
+    $lookup: {
+      from: "drivers_id",
+      // The collection with driver details
+      localField: "_id",
+      // driverId from the grouped data
+      foreignField: "driverId",
+      // driverId field in drivers_id
+      as: "driverDetails" // Alias for the joined data
+    }
+  },
+  {
+    // Step 3: Unwind the driverDetails array to normalize
+    $unwind: "$driverDetails"
+  },
+  {
+    // Step 4: Project the desired fields: name and total races
+    $project: {
+      _id: 0,
+      // Hide the default _id
+      driverName: {
+        $concat: [
+          "$driverDetails.forename",
+          " ",
+          "$driverDetails.surname"
+        ]
+      },
+      // Combine forename and surname
+      totalRaces: 1 // Include the total races
+    }
+  },
+  {
+    // Step 5: Sort the results by totalRaces in descending order
+    $sort: {
+      totalRaces: -1
+    }
+  }
+]
+
+most races
+[
+  {
+    // Step 1: Group by driverId and count the total races
+    $group: {
+      _id: "$driverId", // Group by driverId
+      totalRaces: { $sum: 1 } // Count the total number of races
+    }
+  },
+  {
+    // Step 2: Lookup to join with the drivers_id collection
+    $lookup: {
+      from: "drivers_id", // The collection with driver details
+      localField: "_id", // driverId from the grouped data
+      foreignField: "driverId", // driverId field in drivers_id
+      as: "driverDetails" // Alias for the joined data
+    }
+  },
+  {
+    // Step 3: Unwind the driverDetails array to normalize
+    $unwind: "$driverDetails"
+  },
+  {
+    // Step 4: Project the desired fields: name and total races
+    $project: {
+      _id: 0, // Hide the default _id
+      driverName: {
+        $concat: [
+          "$driverDetails.forename",
+          " ",
+          "$driverDetails.surname"
+        ]
+      }, // Combine forename and surname
+      totalRaces: 1 // Include the total races
+    }
+  },
+  {
+    // Step 5: Sort the results by totalRaces in descending order
+    $sort: { totalRaces: -1 }
+  }
+]
+
+most wins
+[
+  {
+    // Step 1: Filter race results to include only wins (position: 1)
+    $match: { position: 1 }
+  },
+  {
+    // Step 2: Group by driverId and count the number of wins
+    $group: {
+      _id: "$driverId", // Group by driverId
+      totalWins: { $sum: 1 } // Count total wins
+    }
+  },
+  {
+    // Step 3: Lookup to join with the drivers_id collection
+    $lookup: {
+      from: "drivers_id", // The collection with driver details
+      localField: "_id", // driverId from the grouped data
+      foreignField: "driverId", // driverId field in drivers_id
+      as: "driverDetails" // Alias for the joined data
+    }
+  },
+  {
+    // Step 4: Unwind the driverDetails array to normalize
+    $unwind: "$driverDetails"
+  },
+  {
+    // Step 5: Project the desired fields: name and total wins
+    $project: {
+      _id: 0, // Hide the default _id
+      driverName: {
+        $concat: [
+          "$driverDetails.forename",
+          " ",
+          "$driverDetails.surname"
+        ]
+      }, // Combine forename and surname
+      totalWins: 1 // Include the total wins
+    }
+  },
+  {
+    // Step 6: Sort the results by totalWins in descending order
+    $sort: { totalWins: -1 }
+  }
+]
