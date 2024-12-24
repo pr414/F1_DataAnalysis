@@ -52,6 +52,6 @@ def transform_time(input_csv, output_csv):
             writer.writerow(row)
 
 # Example usage
-input_csv_path = "f1_data/results.csv"  # Replace with your input file name
-output_csv_path = "f1_results_transformed.csv"  # Replace with desired output file name
+input_csv_path = "f1_data/results.csv" 
+output_csv_path = "f1_results_transformed.csv"
 transform_time(input_csv_path, output_csv_path)
