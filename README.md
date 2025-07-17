@@ -5,3 +5,5 @@ implement queries capable of analyzing available data on races, drivers, and tra
 mances. MongoDB has been chosen as the database management system, allowing the
 import of CSV-formatted data as Documental data and allowing various aggregation and
 filtering operations to be performed in order to gather and analyze the data of interest.
+
+The project was developed within the course "Systems and Methods for Big and Unstructured Data" held at Politecnico di Milano during the A.Y. 2024/25.
